@@ -35,7 +35,6 @@ async def check_sites():
     async with aiohttp.ClientSession() as session:
         while True:
             sent = False
-            await asyncio.sleep(300)
             for site in settings.SITES:
                 available = await ping_site(session, site)
                 if not available or prev_states.get(site) != available:
@@ -44,6 +43,7 @@ async def check_sites():
                 prev_states[site] = available
             if sent:
                 bot.send_message(settings.CHAT_ID, "=============================")
+            await asyncio.sleep(300)
 
 
 if __name__ == '__main__':
