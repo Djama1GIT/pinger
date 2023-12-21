@@ -9,10 +9,13 @@ Pinger is a bot that checks if my website has not crashed.
 2. Clone the project repository:
 
 ```bash
-git clone https://github.com/Djama1GIT/telebot-pinger.git
-cd telebot-pinger
+git clone https://github.com/Djama1GIT/pinger.git
+cd pinger
 ```
-3. Start the project:
+
+3. Configure the virtual environment settings
+
+4. Start the project:
 
 ```bash
 docker-compose up --build

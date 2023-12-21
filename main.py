@@ -31,26 +31,20 @@ async def send_notification(site: str, available=True):
 
 
 async def check_sites():
-    prev_states: dict[str, bool] = {}
+    prev_states: dict[str, bool] = {k: None for k in settings.SITES}
     async with aiohttp.ClientSession() as session:
         while True:
+            sent = False
             await asyncio.sleep(300)
-            for site in settings.SITE:
+            for site in settings.SITES:
                 available = await ping_site(session, site)
-                if not available or prev_states[site] != available:
+                if not available or prev_states.get(site) != available:
                     await send_notification(site, available)
+                    sent = True
                 prev_states[site] = available
-            bot.send_message(settings.CHAT_ID, "=====================")
-
-
-async def first_launch():
-    async with aiohttp.ClientSession() as session:
-        for site in settings.SITES:
-            available = await ping_site(session, site)
-            await send_notification(site, available)
-        bot.send_message(settings.CHAT_ID, "=====================")
+            if sent:
+                bot.send_message(settings.CHAT_ID, "=============================")
 
 
 if __name__ == '__main__':
-    asyncio.run(first_launch())
     asyncio.run(check_sites())
